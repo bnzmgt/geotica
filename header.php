@@ -10,7 +10,6 @@
 <link rel="shortcut icon" href="<?php echo get_template_directory_uri(); ?>/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="<?php echo get_template_directory_uri(); ?>/apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-title" content="Geospatica" />
-<link rel="manifest" href="<?php echo get_template_directory_uri(); ?>/site.webmanifest" />
 
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
@@ -74,17 +73,7 @@
 </div>
 
 <div 
-    x-data="{ 
-        lastScroll: 0, 
-        isScrollingDown: false, 
-        isSticky: false, 
-        updateScroll() { 
-            let currentScroll = window.pageYOffset; 
-            this.isScrollingDown = currentScroll > this.lastScroll;
-            this.isSticky = currentScroll > 50; // Sticky only after 150px scroll
-            this.lastScroll = currentScroll;
-        } 
-    }" 
+    x-data="{lastScroll: 0, isScrollingDown: false, isSticky: false, updateScroll() { let currentScroll = window.pageYOffset; this.isScrollingDown = currentScroll > this.lastScroll; this.isSticky = currentScroll > 50; this.lastScroll = currentScroll; }}"
     x-on:scroll.window="updateScroll"
     :class="[isSticky ? 'sticky top-0 bg-white py-2 md:py-4 ' : 'py-4 md:py-8']"
     class="navbar navbar-light bg-light navbar-expand-lg z-[2] relative transition-all duration-300 bg-white"

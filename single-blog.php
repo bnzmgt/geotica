@@ -21,7 +21,7 @@ get_header();
                     if (have_posts()): while (have_posts()) : the_post(); ?>
 
                         <div class="box-list">
-                            <?php the_post_thumbnail( 'full', array('class' => 'img-fluid') );?>
+                            
                             <h1><?php the_title();?></h1>
                             <div class="meta">
                                 <span class="author">
@@ -37,7 +37,10 @@ get_header();
                                 </span>
                                 <span class="date"><i class="ti-calendar"></i><?php echo get_the_date('d F Y', strtotime('post_date')); ?></span>
                             </div>
-                            <div class="contentblog">
+
+                            <?php the_post_thumbnail( 'full', array('class' => 'img-fluid') );?>
+
+                            <div class="contentblog prose mt-10">
                                 <?php the_content(); ?>
                             </div>
                         </div>

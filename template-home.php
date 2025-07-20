@@ -114,6 +114,53 @@ get_header(); ?>
                 <?php endif; ?>
             <?php endif; ?>
 
+            <?php if( get_row_layout() == 'category' ): ?>
+                <?php 
+                $categories = get_sub_field('categories');
+                $category_section_title = get_sub_field('category_section_title');
+
+                if( $categories ): ?>
+                    <div class="category-section bg-white py-6 sm:py-8 lg:py-20" data-aos="fade-up" data-aos-offset="300">
+                        <div class="container w-11/12 xl:w-9/12 mx-auto px-4 md:px-8">
+                            <h2 class="mb-8 text-center text-2xl font-bold text-gray-800 md:mb-12 lg:text-3xl">
+                                <?php echo esc_html($category_section_title); ?>
+                            </h2>
+                            <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
+                                <?php foreach( $categories as $category ): 
+                                    $term = $category['category_link'];
+
+                                    // Skip if term is not valid
+                                    if (!($term instanceof WP_Term)) continue;
+
+                                    $link = get_term_link($term);
+                                    if (is_wp_error($link)) continue;
+                                    ?>
+                                    
+                                    <a href="<?php echo esc_url($link); ?>" class="group relative flex h-48 flex-col overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-64 xl:h-96">
+
+                                        <?php if( $category['category_image'] ): ?>
+                                            <div class="h-12 w-12 overflow-hidden rounded-full bg-gray-100 shadow-lg md:h-14 md:w-14">
+                                                <img src="<?php echo esc_url($category['category_image']); ?>" alt="<?php echo esc_attr($term->name); ?>" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-105" />
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <div class="pointer-events-none group-hover:relative absolute inset-0 bg-gradient-to-t from-gray-800 to-transparent md:via-transparent"></div>
+
+                                        <div class="relative mt-auto p-4">
+                                            <?php if( $category['category_name'] ): ?>
+                                                <h5 class="mb-2 text-xl font-semibold text-white transition duration-100"><?php echo esc_html($category['category_name']); ?></h5>
+                                            <?php else: ?>
+                                                <h5 class="mb-2 text-xl font-semibold text-white transition duration-100"><?php echo esc_html($term->name); ?></h5>
+                                            <?php endif; ?>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>            
+                <?php endif; ?>
+            <?php endif; ?>
+
             <?php if( get_row_layout() == 'services' ): ?>
                 <?php 
                 $service_main_image = get_sub_field('service_main_image');
@@ -441,7 +488,7 @@ get_header(); ?>
     <div class="product-section bg-white py-6 sm:py-8 lg:py-12">
         <div class="container w-11/12 xl:w-9/12 mx-auto px-4 md:px-8">
 
-            <div class="bg-white md:bg-transparent z-[1] relative">
+            <div class="bg-white md:bg-transparent z-[1] relative" data-aos="fade-up" data-aos-offset="300">
                 <?php $catalog_heading = get_option('catalog_heading', 1); ?>
                 <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl"><?php echo esc_html($catalog_heading); ?></h2>
                 
@@ -449,16 +496,23 @@ get_header(); ?>
                 // Custom Query to Get catalog_product Posts
                 $args = [
                     'post_type'      => 'catalog_product',
-                    'posts_per_page' => 6, // Limit to 6 products (adjust as needed)
+                    'posts_per_page' => 4, // Limit to 6 products (adjust as needed)
+                    'meta_query'     => [
+                        [
+                            'key'     => 'is_featured_product',
+                            'value'   => '1',
+                            'compare' => '='
+                        ]
+                    ]
                 ];
                 $catalog_query = new WP_Query($args);
 
                 if ($catalog_query->have_posts()) :
                 ?>
-                    <div class="product-grid grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
+                    <div class="product-grid grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-10">
                         <?php while ($catalog_query->have_posts()) : $catalog_query->the_post(); ?>
-                            <div class="product-item" data-aos="fade-up" data-aos-offset="300">
-                                <a href="<?php the_permalink(); ?>" class="product-link relative hover:shadow-md inline-block rounded-lg">
+                            <div class="product-item">
+                                <a href="<?php the_permalink(); ?>" class="product-link relative border border-gray-50 hover:border-gray-200 inline-block rounded-lg overflow-hidden">
                                     <!-- Single Gallery Image -->
                                     <?php 
                                     $gallery_images = get_field('product_images'); // Replace 'product_gallery' with your actual field name
@@ -466,7 +520,7 @@ get_header(); ?>
                                         $first_image = $gallery_images[0]; // Get the first image
                                     ?>
                                         <div class="product-image">
-                                            <img src="<?php echo esc_url($first_image['url']); ?>" alt="<?php echo esc_attr($first_image['alt']); ?>" />
+                                            <img src="<?php echo esc_url($first_image['url']); ?>" alt="<?php echo esc_attr($first_image['alt']); ?>" class="hover:scale-105 transition duration-300" />
                                         </div>
                                     <?php elseif (has_post_thumbnail()) : ?>
                                         <div class="product-image">
@@ -475,7 +529,19 @@ get_header(); ?>
                                     <?php endif; ?>
 
                                     <!-- Product Title -->
-                                    <h2 class="product-title text-center text-lg font-semibold leading-7 text-default hover:text-default-hover my-5"><?php the_title(); ?></h2>
+                                    <h2 class="product-title text-center text-lg font-normal leading-7 text-default hover:text-default-hover mt-5 mb-2"><?php the_title(); ?></h2>
+
+                                    <!-- Product Category -->
+                                    <?php
+                                        $terms = get_the_terms(get_the_ID(), 'catalog_category'); // Replace with your taxonomy slug
+                                        if ($terms && !is_wp_error($terms)) :
+                                            echo '<div class="product-category text-center text-sm text-gray-500 mb-4">';
+                                            foreach ($terms as $term) {
+                                                echo esc_html($term->name) . ' ';
+                                            }
+                                            echo '</div>';
+                                        endif;
+                                    ?>
                                     
                                     <!-- Product Price -->
                                     <?php 
@@ -513,7 +579,7 @@ get_header(); ?>
 
     
     <div class="article-section bg-white py-6 sm:py-8 lg:py-12">
-        <div class="container w-11/12 xl:w-9/12 mx-auto px-4 md:px-8">
+        <div class="container w-11/12 xl:w-9/12 mx-auto px-4 md:px-8" data-aos="fade-up" data-aos-offset="300">
 
             <?php
             $post_objects = get_field('home_content_blog');
@@ -532,16 +598,16 @@ get_header(); ?>
                         $alt = get_post_meta($thumb_id, '_wp_attachment_image_alt', true);
                         $title = get_the_title($thumb_id);
                     ?>
-                    <div class="relative z-[1]">
+                    <div class="relative z-[1] bg-white md:bg-transparent rounded-md hover:bg-gray-100">
                         <div class="unibox uniblog uniblog__duo transform">
                             <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
                                 <div class="unibloginner">
                                     <?php if ( wp_is_mobile() ) : ?>
-                                        <div class="unimages">
+                                        <div class="unimages hover:scale-105 transition duration-300">
                                             <?php
                                                 if ( has_post_thumbnail() ) {
                                                     $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'album-grid' );
-                                                    echo '<img src="'.$image[0].'" data-id="'.$post->ID.'" class="img-responsive" alt="'.$alt.'" title="'.$title.'">';
+                                                    echo '<img src="'.$image[0].'" data-id="'.$post->ID.'" class="img-responsive hover:scale-105 transition duration-300" alt="'.$alt.'" title="'.$title.'">';
                                                 }
                                             ?>
                                         </div>
@@ -549,18 +615,13 @@ get_header(); ?>
                                         <div class="unimages">
                                             <?php
                                                 if ( has_post_thumbnail() ) {
-                                                    $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'album-grid' );
-                                                    echo '<img src="'.$image[0].'" data-id="'.$post->ID.'" class="img-responsive" alt="'.$alt.'" title="'.$title.'">';
+                                                    $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
+                                                    echo '<img src="'.$image[0].'" data-id="'.$post->ID.'" class="img-responsive hover:scale-105 transition duration-300" alt="'.$alt.'" title="'.$title.'">';
                                                 }
                                             ?>
                                         </div>
                                     <?php endif; ?>
                                     <div class="info">
-                                        <div class="meta">
-                                            <span class="time">
-                                                <i class="ti-calendar" aria-hidden="true"></i> <span class="ml-2"><?php echo get_the_date('d F Y', strtotime('post_date')); ?></span>
-                                            </span>
-                                        </div>
                                         <h3><?php the_title(); ?></h3>
                                     </div>
                                 </div>

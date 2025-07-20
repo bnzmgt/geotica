@@ -1,3 +1,12 @@
+/*!
+    Theme Name: Offizt
+    Author: Distrapps
+    Author URI: https://distrapps.com
+    Description: Offizt is a Company Profile Theme niche. All Distrapps product adopt Easy to Use method (ESTU) for company or personal user and will user-friendly for visitor.
+    Version: 1.0.0
+    Tags: company profile, catalog, service, product
+*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +15,14 @@ html {
     font-size: 16px;
     @apply text-primary font-light leading-7;
     
+}
+
+.prose {
+    @apply max-w-none
+}
+
+p {
+    @apply mb-4
 }
 
 .homepage {
@@ -38,19 +55,6 @@ html {
 
 .hero-section {
     background: #f9f5f2 radial-gradient(circle, #f2f4f9, #f9f5f2);
-}
-
-.aboutus-section {
-    /* &:before {
-        background: linear-gradient(180deg, #ffe297 -35.55%, rgba(245, 138, 37, 0) 100%, #ffe195 0);
-        content: "";
-        filter: blur(150px);
-        height: 100%;
-        opacity: .8;
-        position: absolute;
-        width: 100%;
-        z-index: -1;
-    } */
 }
 
 .footer-links {
@@ -216,6 +220,12 @@ html {
 
 main p + p {
     @apply mt-5;
+}
+
+.catalog_product-template-default {
+  .social-share-buttons {
+    @apply hidden;
+  }
 }
 
 
@@ -449,7 +459,6 @@ main p + p {
     .accordion,
     .tab-content {
         h2 {
-            @apply font-medium my-3;
 
             &:first-child {
                 @apply mt-0;
@@ -470,22 +479,34 @@ main p + p {
 .feature-content {
     .feature-item {
         @apply border-b border-primary border-dotted grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[200px,1fr] gap-2 md:gap-4 py-4;
+
+        &:first-child {
+            @apply grid-cols-none pt-0;
+
+            .item-title {
+                @apply mt-0;
+            }
+        }
     
         .item-title {
             @apply text-sm text-[#212636] font-semibold leading-5 mb-0;
+
+            &.heading {
+                @apply text-xl;
+            }
         }
     
         .item-info {
             @apply text-sm text-[#667085] font-normal leading-5 mt-0 md:text-right mb-0;
         }
 
-        &.heading {
+        /* &.heading {
             @apply grid grid-cols-1;
 
             .item-title {
                 @apply text-xl;
             }
-        }
+        } */
     }
 }
 
@@ -601,9 +622,9 @@ main p + p {
 
 	&.blog-heading {
 		h3 {
-			background: ;
+			background: #000 ;
 			padding: 0 20px;
-			color: ;
+			color: #fff;
 			line-height: 50px;
 		}
 	}
@@ -653,24 +674,10 @@ main p + p {
     overflow: hidden;
 
     &.unibox {
-        background: #fff;
         border-radius: 7px;
         text-align: center;
         transition: all .2s ease-in-out;
         position: relative;
-
-        &:after {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            background: rgb(0, 0, 0);
-            background: linear-gradient(0deg, rgba(0, 0, 0, 0.8799894957983193) 0%, rgba(252, 252, 252, 0) 40%);
-        }
 
         .unibloginner {
             position: relative;
@@ -699,7 +706,7 @@ main p + p {
             }
 
             .info {
-                position: absolute;
+                /* position: absolute; */
                 bottom: 0;
                 z-index: 2;
                 width: 100%;
@@ -707,8 +714,7 @@ main p + p {
                 padding: 0 20px;
 
                 h3 {
-                    margin: 10px 0 20px;
-                    @apply text-white text-xl;
+                    @apply text-black hover:text-default text-lg font-semibold no-underline my-5;
                 }
 
                 .meta {

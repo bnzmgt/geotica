@@ -1,4 +1,8 @@
 <?php
+/*
+
+*/
+
 add_filter('acf/rest_api/fetch_item', function ($data, $request) {
     return $data;
 }, 10, 2);
@@ -153,36 +157,6 @@ register_nav_menus(array(
 	'primary' => __( 'Primary Menu', 'header-menu' ),
 ));
 
-function mytheme_add_woocommerce_support(){
-  add_theme_support('woocommerce', array(
-  'thumbnail_image_width' => 150,
-  'single_image_width' => 300,
-  'product_grid' => array(
-    'default_rows' => 3,
-    'min_rows' => 2,
-    'max_rows' => 8,
-    'default_columns' => 4,
-    'min_columns' => 2,
-    'max_columns' => 5,
-    ),
-  ));
-}
-add_action('after_setup_theme', 'mytheme_add_woocommerce_support');
-
-// -----------------------------------------------------------------------------
-// woocommerce zoom
-// -----------------------------------------------------------------------------
-function mytheme_add_woocommerce_zooming(){
-  add_theme_support('wc-product-gallery-zoom');
-  //add_theme_support('wc-product-gallery-lightbox');
-  //add_theme_support('wc-product-gallery-slider');
-}
-add_action('wp', 'mytheme_add_woocommerce_zooming', 99);
-
-function cl (){
-    the_excerpt();
-}
-add_action('woocommerce_after_shop_lopp_item_title', 'cl', 40);
 
 // -----------------------------------------------------------------------------
 // ACF Option page
@@ -336,7 +310,7 @@ if (function_exists('add_theme_support')) {
 function my_theme_enqueue_styles() {
 
     $parent_style = 'offizt-style';
-    $css_file = get_template_directory() . '/main.css';
+    $css_file = get_template_directory() . '/style.css';
     $version = file_exists($css_file) ? filemtime($css_file) : '1.0.0';
     //wp_enqueue_script('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.3/jquery.min.js', array(), null, true );
     wp_enqueue_script('jquery', 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js', array(), null, true );    
@@ -353,7 +327,7 @@ function my_theme_enqueue_styles() {
 		wp_enqueue_style('fancybox', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css', array(), null,'all' );
     // wp_enqueue_style('fontello', get_stylesheet_directory_uri() . '/asset/fontello/css/marker.css', array(), null,'all' );
 		wp_enqueue_style('themify', get_stylesheet_directory_uri() . '/asset/fonts/themify-icons.css', array(), null,'all' );
-    wp_enqueue_style( $parent_style, get_template_directory_uri() . '/main.css', array(), $version );
+    wp_enqueue_style( $parent_style, get_template_directory_uri() . '/style.css', array(), $version );
 }
 add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles', 60 );
 //add_filter('acf/settings/show_admin', '__return_false');
@@ -383,7 +357,8 @@ function load_google_fonts($field) {
         'Montserrat' => 'Montserrat',
         'Poppins' => 'Poppins',
         'Jura' => 'Jura',
-        'Michroma' => 'Michroma'
+        'Michroma' => 'Michroma',
+        'DM Sans' => 'DM Sans'
     ];
 
     // Set the choices for the select field
@@ -615,7 +590,9 @@ function add_social_share_buttons($content) {
 add_filter('the_content', 'add_social_share_buttons');
 
 
-
+// -----------------------------------------------------------------------------
+// Select2 
+// -----------------------------------------------------------------------------
 function select2_adjust() {
   	echo '<style>
 			.select2-container--default .select2-selection--multiple .select2-selection__choice,
