@@ -357,7 +357,7 @@ main p + p {
     
 }
 
-#scf-contact-form,
+/* #scf-contact-form,
 .enquiry-form {
     label {
         display: block;
@@ -396,7 +396,7 @@ main p + p {
     button {
         @apply inline-block rounded-full bg-default hover:bg-default-hover px-8 py-3 text-center text-sm font-medium text-white outline-none transition duration-100 md:text-base;
     }
-}
+} */
 
 .footnote {
     @apply space-y-2;

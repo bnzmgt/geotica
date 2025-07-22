@@ -7,6 +7,7 @@ module.exports = {
     './**/*.html',
     './src/**/*.js',
     '../../plugins/distpro/**/*.php', // 👈 Add plugin template scanning
+    '../../plugins/distcont/**/*.php', // 👈 Add plugin template scanning
   ],
   safelist: [
     'dynamic-font', // Add any dynamic classes you don't want purged

@@ -617,9 +617,9 @@ add_action( 'after_setup_theme', 'register_html_support' );
 // -----------------------------------------------------------------------------
 require_once ( get_stylesheet_directory() . '/inc/plugin-update-checker/plugin-update-checker.php' );
     $updateChecker = Puc_v4_Factory::buildUpdateChecker(
-        'https://github.com/bnzmgt/offizt',
+        'https://github.com/bnzmgt/geotica',
         __FILE__,
-        'offizt'
+        'geotica'
     );
 
     // $updateChecker->setAuthentication( array(
@@ -627,7 +627,7 @@ require_once ( get_stylesheet_directory() . '/inc/plugin-update-checker/plugin-u
     //     'consumer_secret' => 'eJJTb6YYSGjVKZ6LszVgrGPejR79BKH8',
     // ));
 
-    $updateChecker->setBranch( 'develop' );
+    $updateChecker->setBranch( 'main' );
 
 add_filter( 'auto_update_plugin', '__return_false' );
 add_filter( 'auto_update_theme', '__return_false' );
